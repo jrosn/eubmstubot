@@ -1,4 +1,4 @@
-package ru.rvsosn.eubmstubot;
+package ru.rvsosn.eubmstubot.eubmstu;
 
 import org.openqa.selenium.By;
 
@@ -14,7 +14,7 @@ public enum EUElementPath {
 
     EU_MAIN_SESSIONS_BTN(By.xpath("//*[@id=\"canvas\"]/ul/li[2]/a")),
 
-    EU_SESSION_GROUPS(By.cssSelector("#session-structure ul li > i > a"));
+    EU_SESSION_GROUPS(By.cssSelector("#session-structure ul > li > i > a:nth-child(1)"));
 
     private final By by;
 
