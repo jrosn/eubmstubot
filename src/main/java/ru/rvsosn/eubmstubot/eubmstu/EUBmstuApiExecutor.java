@@ -18,7 +18,7 @@ public class EUBmstuApiExecutor {
     /**
      * Выполняет задачу
      */
-    public <T> T executeTask(ITask<? extends T> task) {
+    public synchronized <T> T executeTask(ITask<? extends T> task) {
         Object cachedResult = resultCache.get(task);
         if (cachedResult != null) {
             //noinspection unchecked
@@ -31,10 +31,14 @@ public class EUBmstuApiExecutor {
         return result;
     }
 
+    public void warmingCache() {
+        executeTask(new GetAllGroupsInLastSessionTask());
+    }
+
     /**
      * Инициализирует "запускатор".
      */
-    public void init() {
+    private void init() {
         WebDriver driver = context.getDriver();
 
         if (defaultPageUrl == null) {

@@ -1,27 +1,26 @@
 package ru.rvsosn.eubmstubot;
 
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.TelegramBotsApi;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
 import ru.rvsosn.eubmstubot.eubmstu.EUBmstuApiExecutor;
-import ru.rvsosn.eubmstubot.eubmstu.GetAllGroupsInLastSessionResult;
-import ru.rvsosn.eubmstubot.eubmstu.GetAllGroupsInLastSessionTask;
-import ru.rvsosn.eubmstubot.eubmstu.GetGroupInLastSessionTask;
-
-import java.util.ArrayList;
 
 public class Runner {
 
     public static void main(String[] args) {
-        EUBmstuApiExecutor apiExecutor = new EUBmstuApiExecutor(
-                new FirefoxDriver(),
-                System.getProperty("ru.rvsosn.eubmstubot.eulogin"),
-                System.getProperty("ru.rvsosn.eubmstubot.eupassword"));
+        ApiContextInitializer.init();
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+        try {
+            EUBmstuApiExecutor apiExecutor = new EUBmstuApiExecutor(
+                    new FirefoxDriver(),
+                    System.getProperty("ru.rvsosn.eubmstubot.eulogin"),
+                    System.getProperty("ru.rvsosn.eubmstubot.eupassword"));
+            apiExecutor.warmingCache();
 
-        GetAllGroupsInLastSessionResult result = apiExecutor.executeTask(new GetAllGroupsInLastSessionTask());
-
-        for (int i = 0; i < 100; i++) {
-            apiExecutor.executeTask(new GetGroupInLastSessionTask(new ArrayList<>(result.getGroupNames()).get(0)));
+            telegramBotsApi.registerBot(new EuBmstuBot(apiExecutor));
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
-
-        apiExecutor.close();
     }
 }
