@@ -62,6 +62,10 @@ public class EuBmstuBot extends TelegramLongPollingBot {
                     .findAny(g -> g.toLowerCase().contains(normalized.toLowerCase()));
 
             if (foundedGroupName.isPresent()) {
+                new SendMessageBuilder()
+                        .setChatId(message.getChatId())
+                        .setText("Сейчас кину результаты последней сессии для группы " + foundedGroupName.get())
+                        .send(this);
                 new ChatActionBuilder()
                         .setChatId(message.getChatId())
                         .setActionType(ActionType.UPLOADPHOTO)
