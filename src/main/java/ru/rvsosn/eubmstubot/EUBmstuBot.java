@@ -17,13 +17,13 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Set;
 
-public class EuBmstuBot extends TelegramLongPollingBot {
+public class EUBmstuBot extends TelegramLongPollingBot {
     final String HELLO =
             "Добро пожаловать!\n\n" +
                     "Отправь мне название группы и я тебе кину скрин с результатами сессии";
     private final EUBmstuApiExecutor executor;
 
-    public EuBmstuBot(EUBmstuApiExecutor executor) {
+    public EUBmstuBot(EUBmstuApiExecutor executor) {
         this.executor = executor;
     }
 
@@ -99,7 +99,7 @@ class SendMessageBuilder {
         return this;
     }
 
-    public void send(EuBmstuBot bot) throws TelegramApiException {
+    public void send(EUBmstuBot bot) throws TelegramApiException {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText(text);
         sendMessage.setChatId(chatId);
@@ -121,7 +121,7 @@ class ChatActionBuilder {
         return this;
     }
 
-    public void send(EuBmstuBot bot) throws TelegramApiException {
+    public void send(EUBmstuBot bot) throws TelegramApiException {
         SendChatAction chatAction = new SendChatAction();
         chatAction.setChatId(chatId);
         chatAction.setAction(type);
@@ -143,7 +143,7 @@ class SendPhotoBuilder {
         return this;
     }
 
-    public void send(EuBmstuBot bot) throws TelegramApiException {
+    public void send(EUBmstuBot bot) throws TelegramApiException {
         SendPhoto sendPhoto = new SendPhoto();
         sendPhoto.setChatId(chatId);
         sendPhoto.setNewPhoto(imageFile.toFile());

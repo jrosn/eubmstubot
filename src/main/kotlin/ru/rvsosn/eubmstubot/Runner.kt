@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
                 System.getProperty("ru.rvsosn.eubmstubot.eupassword"))
         apiExecutor.warmingCache()
 
-        telegramBotsApi.registerBot(EuBmstuBot(apiExecutor))
+        telegramBotsApi.registerBot(EUBmstuBot(apiExecutor))
     } catch (e: TelegramApiException) {
         e.printStackTrace()
     }
