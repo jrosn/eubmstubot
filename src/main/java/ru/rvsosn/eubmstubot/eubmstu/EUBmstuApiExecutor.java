@@ -2,12 +2,16 @@ package ru.rvsosn.eubmstubot.eubmstu;
 
 import org.openqa.selenium.WebDriver;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EUBmstuApiExecutor {
     private final Context context;
     private String defaultPageUrl;
+    private LocalDateTime lastFullInit;
     private Map<ITask, Object> resultCache;
 
     public EUBmstuApiExecutor(WebDriver driver, String euLogin, String euPassword) {
@@ -41,7 +45,7 @@ public class EUBmstuApiExecutor {
     private void init() {
         WebDriver driver = context.getDriver();
 
-        if (defaultPageUrl == null) {
+        if (defaultPageUrl == null || ChronoUnit.HOURS.between(lastFullInit, LocalDateTime.now()) >= 1) {
             // Переходим на страницу авторизации WebVPN
             String WEBVPN_ADDR = "https://webvpn.bmstu.ru/+CSCOE+/logon.html";
             driver.get(WEBVPN_ADDR);
@@ -62,6 +66,7 @@ public class EUBmstuApiExecutor {
                     .click();
 
             defaultPageUrl = driver.getCurrentUrl();
+            lastFullInit = LocalDateTime.now();
         }
 
         driver.get(defaultPageUrl);
